@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "BillEase API",
+    "description": "All REST API requests. Import into Thunder Client (Collections > menu > Import) or Postman. Start the backend first.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" }
+  ],
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get all products",
+          "request": { "method": "GET", "url": "{{baseUrl}}/products" }
+        },
+        {
+          "name": "Search products (name or ID)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/products?search=pen" }
+        },
+        {
+          "name": "Get product by ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/products/1" }
+        },
+        {
+          "name": "Add product",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/products",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Green Tea 100g\",\n  \"category\": \"Grocery\",\n  \"price\": 120.00,\n  \"quantity\": 30\n}"
+            }
+          }
+        },
+        {
+          "name": "Add product - invalid (expect 400)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/products",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"category\": \"Grocery\",\n  \"price\": -5,\n  \"quantity\": -1\n}"
+            }
+          }
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/products/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Notebook A4 (200 pages)\",\n  \"category\": \"Stationery\",\n  \"price\": 65.00,\n  \"quantity\": 120\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete product (soft delete)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/products/9" }
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "Low-stock products",
+          "request": { "method": "GET", "url": "{{baseUrl}}/products/low-stock" }
+        },
+        {
+          "name": "Add stock",
+          "request": { "method": "PUT", "url": "{{baseUrl}}/products/6/stock?add=20" }
+        }
+      ]
+    },
+    {
+      "name": "Billing",
+      "item": [
+        {
+          "name": "Create sale (bill)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sales",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 2 },\n    { \"productId\": 2, \"quantity\": 5 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Create sale - not enough stock (expect 400)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sales",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": 8, \"quantity\": 1000 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Sales history",
+          "request": { "method": "GET", "url": "{{baseUrl}}/sales" }
+        },
+        {
+          "name": "Get sale / invoice",
+          "request": { "method": "GET", "url": "{{baseUrl}}/sales/1" }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Dashboard summary",
+          "request": { "method": "GET", "url": "{{baseUrl}}/dashboard" }
+        }
+      ]
+    }
+  ]
+}
