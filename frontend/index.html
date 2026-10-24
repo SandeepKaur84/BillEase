@@ -2,11 +2,194 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Entry point: the app's pages live in the pages/ folder -->
-    <meta http-equiv="refresh" content="0; url=pages/dashboard.html">
-    <title>BillEase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BillEase - Inventory and Billing for Small Shops</title>
+    <meta name="description" content="BillEase manages products and stock, makes bills, prints invoices and shows your sales, all in the browser.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="assets/css/base.css" rel="stylesheet">
+    <link href="assets/css/components.css" rel="stylesheet">
+    <link href="assets/css/landing.css" rel="stylesheet">
 </head>
-<body>
-<a href="pages/dashboard.html">Open BillEase</a>
+<body class="landing">
+
+<!-- ===== Top navigation ===== -->
+<header class="site-nav">
+    <div class="container nav-inner">
+        <a href="index.html" class="site-brand">
+            <span class="site-logo"><i class="bi bi-receipt-cutoff"></i></span>BillEase
+        </a>
+        <nav class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#safe">Why BillEase</a>
+        </nav>
+        <!-- Swapped for "Open dashboard" by landing.js when already logged in -->
+        <div class="nav-actions" id="navActions">
+            <a href="pages/login.html" class="btn btn-light">Log in</a>
+            <a href="pages/signup.html" class="btn btn-primary">Sign up</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- ===== Hero ===== -->
+    <section class="hero-section">
+        <div class="container hero-grid">
+            <div>
+                <span class="eyebrow"><i class="bi bi-shop me-1"></i>Inventory + billing for small shops</span>
+                <h1>Billing made <span class="accent">easy</span> for your shop counter.</h1>
+                <p class="lead">
+                    BillEase keeps your products and stock in one place, turns a few taps into a printed bill,
+                    and shows you what sold today. It runs in the browser, with nothing to install on the counter.
+                </p>
+                <div class="hero-actions" id="heroActions">
+                    <a href="pages/signup.html" class="btn btn-primary btn-lg">Get started free<i class="bi bi-arrow-right ms-2"></i></a>
+                    <a href="pages/login.html" class="btn btn-light btn-lg">I have an account</a>
+                </div>
+                <ul class="hero-points">
+                    <li><i class="bi bi-check2-circle"></i>Free account</li>
+                    <li><i class="bi bi-check2-circle"></i>Sample products included</li>
+                    <li><i class="bi bi-check2-circle"></i>Works on phone and desktop</li>
+                </ul>
+            </div>
+
+            <!-- A small picture of the app, drawn with HTML -->
+            <div class="preview" aria-hidden="true">
+                <div class="preview-bar"><span></span><span></span><span></span></div>
+                <div class="preview-body">
+                    <div class="preview-kpis">
+                        <div class="preview-kpi main"><small>Today's revenue</small><strong>&#8377;4,815</strong></div>
+                        <div class="preview-kpi"><small>Bills</small><strong>23</strong></div>
+                        <div class="preview-kpi warn"><small>Low stock</small><strong>3</strong></div>
+                    </div>
+                    <div class="preview-bill">
+                        <div class="preview-bill-head"><i class="bi bi-cart3"></i>Current bill</div>
+                        <div class="preview-line"><span>Notebook A4 &times; 2</span><b>&#8377;120.00</b></div>
+                        <div class="preview-line"><span>Ball Pen (Blue) &times; 5</span><b>&#8377;50.00</b></div>
+                        <div class="preview-line"><span>Basmati Rice 1kg &times; 1</span><b>&#8377;145.00</b></div>
+                        <div class="preview-total"><span>Grand total</span><b>&#8377;315.00</b></div>
+                        <div class="preview-btn"><i class="bi bi-receipt me-1"></i>Generate Bill</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Features</span>
+                <h2>Everything a small shop needs, nothing it doesn't</h2>
+                <p>Six simple screens that cover the whole day, from opening stock to the last bill.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="feature-icon tone-primary"><i class="bi bi-box-seam"></i></div>
+                    <h3>Product management</h3>
+                    <p>Add, edit, search and remove products with their category, price and stock.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon tone-warning"><i class="bi bi-boxes"></i></div>
+                    <h3>Stock tracking</h3>
+                    <p>Stock goes down by itself after every sale. Low-stock and out-of-stock items stand out.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon tone-success"><i class="bi bi-cart3"></i></div>
+                    <h3>Fast billing</h3>
+                    <p>Tap products, change quantities, see the total live. You can never sell more than you have.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon tone-info"><i class="bi bi-printer"></i></div>
+                    <h3>Printable invoices</h3>
+                    <p>Every bill gets an invoice number and a clean page you can print or save as PDF.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon tone-danger"><i class="bi bi-receipt"></i></div>
+                    <h3>Sales history</h3>
+                    <p>Every past bill with its date and total. Old invoices keep the price you charged that day.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon tone-primary"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h3>Live dashboard</h3>
+                    <p>Revenue for the week, today's sales, top sellers and what needs restocking, at a glance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== How it works ===== -->
+    <section class="section section-alt" id="how">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">How it works</span>
+                <h2>From sign-up to first bill in three steps</h2>
+            </div>
+            <ol class="steps">
+                <li>
+                    <span class="step-no">1</span>
+                    <h3>Create your account</h3>
+                    <p>Sign up with your name and email. Your login keeps the shop's data private.</p>
+                </li>
+                <li>
+                    <span class="step-no">2</span>
+                    <h3>Add your products</h3>
+                    <p>Enter what you sell with price and stock, or start with the 8 sample products.</p>
+                </li>
+                <li>
+                    <span class="step-no">3</span>
+                    <h3>Start billing</h3>
+                    <p>Make a bill, print the invoice, and watch stock and sales update on the dashboard.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ===== Why BillEase ===== -->
+    <section class="section" id="safe">
+        <div class="container safe-grid">
+            <div>
+                <span class="eyebrow">Why BillEase</span>
+                <h2>Built so the numbers are always right</h2>
+                <p class="text-muted">
+                    The rules live on the server, not in the browser, so a bill can't be changed
+                    on the way and stock can't go wrong, even with two cashiers at once.
+                </p>
+            </div>
+            <ul class="safe-list">
+                <li><i class="bi bi-shield-check"></i><div><b>No overselling</b>A sale is refused if there isn't enough stock, even if two bills are made at the same moment.</div></li>
+                <li><i class="bi bi-calculator"></i><div><b>Prices from the server</b>Totals are worked out from the saved price, never from what the browser sends.</div></li>
+                <li><i class="bi bi-arrow-repeat"></i><div><b>All or nothing</b>If one line of a bill fails, nothing is saved and no stock changes.</div></li>
+                <li><i class="bi bi-lock"></i><div><b>Private by login</b>Only signed-in users can see the shop. Passwords are stored as secure hashes.</div></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== Call to action ===== -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-inner">
+                <div>
+                    <h2>Ready to make your first bill?</h2>
+                    <p>Create a free account. It takes less than a minute.</p>
+                </div>
+                <a href="pages/signup.html" class="btn btn-lg cta-btn" id="ctaBtn">Create free account</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <span><b>BillEase</b> &middot; Billing made easy</span>
+        <span>Java &middot; Spring Boot &middot; MySQL &middot; HTML, CSS &amp; JavaScript</span>
+    </div>
+</footer>
+
+<script src="assets/js/core/api.js"></script>
+<script src="assets/js/core/format.js"></script>
+<script src="assets/js/pages/landing.js"></script>
 </body>
 </html>

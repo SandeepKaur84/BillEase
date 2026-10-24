@@ -53,12 +53,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .setCacheControl(CacheControl.noCache());
     }
 
-    // http://localhost:8080/ -> the dashboard page.
-    // A redirect (not a forward) so the browser's address is inside pages/
-    // and the page's relative links (../assets/..., products.html) work.
+    // http://localhost:8080/ -> the public home page (index.html),
+    // which links to log in / sign up and from there to the app in pages/
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:/pages/dashboard.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
 
     /**
