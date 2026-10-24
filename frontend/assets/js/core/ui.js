@@ -138,3 +138,27 @@ function createModal(element, { onShown, onHidden } = {}) {
 
     return { show, hide };
 }
+
+// ----- Count-up numbers -----
+
+/**
+ * Animates a number in an element from 0 up to `value`, e.g. KPI cards.
+ * format turns the number into text, e.g. money. Shows the final value at once
+ * for people who ask their system for less motion.
+ */
+function countUp(id, value, format = n => Math.round(n).toLocaleString('en-IN'), duration = 900) {
+    const element = document.getElementById(id);
+    const target = Number(value) || 0;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || target === 0) {
+        element.textContent = format(target);
+        return;
+    }
+    const start = performance.now();
+    const step = now => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // fast at first, gentle at the end
+        element.textContent = format(target * eased);
+        if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+}

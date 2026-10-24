@@ -24,13 +24,13 @@ function renderKpis(summary, sales) {
     const todaySales = sales.filter(s => dayKey(new Date(s.saleDate)) === todayKey);
     const todayTotal = todaySales.reduce((sum, s) => sum + Number(s.totalAmount), 0);
 
-    setText('kpiRevenue', money(summary.totalRevenue));
+    countUp('kpiRevenue', summary.totalRevenue, money);
     setText('kpiRevenueNote', summary.totalSales + ' bill' + (summary.totalSales === 1 ? '' : 's') + ' in total');
-    setText('kpiToday', money(todayTotal));
+    countUp('kpiToday', todayTotal, money);
     setText('kpiTodayNote', todaySales.length + ' bill' + (todaySales.length === 1 ? '' : 's') + ' today');
-    setText('kpiProducts', summary.totalProducts);
+    countUp('kpiProducts', summary.totalProducts);
     setText('kpiProductsNote', 'Active products');
-    setText('kpiLow', summary.lowStockCount);
+    countUp('kpiLow', summary.lowStockCount);
     setText('kpiLowNote', summary.lowStockCount ? 'Need restocking' : 'All well stocked');
     setText('thresholdText', 'Products with stock ≤ ' + summary.lowStockThreshold);
 }

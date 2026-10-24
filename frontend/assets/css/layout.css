@@ -38,7 +38,12 @@ img.brand-logo {
     background: none;
 }
 
+.brand:hover .brand-logo {
+    transform: rotate(-10deg) scale(1.06);
+}
+
 .brand-logo {
+    transition: transform 0.35s var(--ease-spring);
     width: 36px;
     height: 36px;
     border-radius: 10px;
@@ -67,6 +72,7 @@ img.brand-logo {
 }
 
 .side-link {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -75,16 +81,40 @@ img.brand-logo {
     border-radius: var(--radius-sm);
     color: var(--sidebar-text);
     font-weight: 500;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.2s, color 0.2s, padding-left 0.25s var(--ease-out), box-shadow 0.25s;
 }
 
 .side-link i {
     font-size: 17px;
+    transition: transform 0.3s var(--ease-spring);
 }
 
 .side-link:hover {
     background: rgba(255, 255, 255, 0.06);
     color: #fff;
+    padding-left: 16px;
+}
+
+.side-link:hover i {
+    transform: scale(1.15);
+}
+
+/* Small bar on the left edge of the open page's link */
+.side-link::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    width: 4px;
+    height: 0;
+    border-radius: 0 4px 4px 0;
+    background: #a5b4fc;
+    transform: translateY(-50%);
+    transition: height 0.3s var(--ease-out);
+}
+
+.side-link.active::before {
+    height: 24px;
 }
 
 .side-link.active {
@@ -153,6 +183,7 @@ img.brand-logo {
 }
 
 .topbar h1 {
+    animation: fade-in 0.4s ease both;
     font-size: 20px;
     font-weight: 700;
     margin: 0;
@@ -185,6 +216,7 @@ img.brand-logo {
 }
 
 .menu-btn {
+    transition: transform 0.2s var(--ease-out);
     display: none;
     border: 0;
     background: var(--surface);
@@ -198,6 +230,20 @@ img.brand-logo {
 .content {
     padding: 24px 28px 48px;
 }
+
+/* Page content fades up on load, card by card, row by row */
+.content > :not(.row),
+.content > .row > * {
+    animation: fade-up 0.6s var(--ease-out) both;
+    animation-delay: calc(var(--row-delay, 0s) + var(--col-delay, 0s));
+}
+
+.content > .row:nth-child(2) { --row-delay: 0.12s; }
+.content > .row:nth-child(3) { --row-delay: 0.24s; }
+
+.content > .row > :nth-child(2) { --col-delay: 0.06s; }
+.content > .row > :nth-child(3) { --col-delay: 0.12s; }
+.content > .row > :nth-child(4) { --col-delay: 0.18s; }
 
 .sidebar-overlay {
     display: none;
@@ -214,6 +260,7 @@ img.brand-logo {
     }
 
     .sidebar-overlay.show {
+        animation: fade-in 0.25s ease both;
         display: block;
         position: fixed;
         inset: 0;

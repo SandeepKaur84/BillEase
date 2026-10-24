@@ -17,7 +17,12 @@
     border-radius: var(--radius);
     background: var(--surface);
     padding: 14px;
-    transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s, border-color 0.2s;
+}
+
+.product-card:active:not(:disabled) {
+    transform: scale(0.96);
+    transition-duration: 0.08s;
 }
 
 .product-card:hover:not(:disabled) {
@@ -184,6 +189,16 @@
     width: 100%;
     padding: 13px;
     font-size: 15px;
+}
+
+/* A soft pulse once the bill has items and can be generated */
+.btn-checkout:not(:disabled) {
+    animation: checkout-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes checkout-pulse {
+    0%, 100% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
+    50%      { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25), 0 0 0 8px rgba(16, 185, 129, 0.12); }
 }
 
 @media (max-width: 991.98px) {

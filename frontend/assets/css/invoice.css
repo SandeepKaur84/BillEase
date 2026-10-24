@@ -110,6 +110,7 @@
 }
 
 .paid-stamp {
+    animation: pop 0.5s var(--ease-spring) 0.5s both;
     display: inline-flex;
     align-items: center;
     gap: 6px;

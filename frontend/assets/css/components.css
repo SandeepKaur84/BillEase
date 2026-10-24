@@ -9,6 +9,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out), border-color 0.25s;
 }
 
 .panel-header {
@@ -44,7 +45,17 @@
     height: 100%;
 }
 
+.stat:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat:hover .stat-icon {
+    transform: rotate(-8deg) scale(1.08);
+}
+
 .stat-icon {
+    transition: transform 0.3s var(--ease-spring);
     flex-shrink: 0;
     width: 46px;
     height: 46px;
@@ -142,6 +153,7 @@
 
 .table-modern tbody tr {
     transition: background 0.12s;
+    animation: fade-in 0.35s ease both;
 }
 
 .table-modern tbody tr:hover {
@@ -172,6 +184,15 @@
 
 .item-name {
     font-weight: 600;
+}
+
+.avatar {
+    transition: transform 0.3s var(--ease-spring);
+}
+
+tr:hover .avatar,
+.product-card:hover .avatar {
+    transform: scale(1.1) rotate(-6deg);
 }
 
 .item-sub {
@@ -235,7 +256,8 @@
     transition: all 0.15s;
 }
 
-.btn-icon:hover { color: var(--primary); border-color: #c7d2fe; background: var(--primary-soft); }
+.btn-icon:hover { color: var(--primary); border-color: #c7d2fe; background: var(--primary-soft); transform: translateY(-2px); }
+.btn-icon:active { transform: scale(0.92); }
 .btn-icon.danger:hover { color: var(--danger); border-color: #fecaca; background: var(--danger-soft); }
 
 /* ---------- Buttons ---------- */
@@ -253,7 +275,49 @@
     vertical-align: middle;
     white-space: nowrap;
     user-select: none;
-    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.2s, transform 0.2s var(--ease-out);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+}
+
+/* A light sweep across coloured buttons on hover */
+.btn-primary::after,
+.btn-success::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: translateX(-120%) skewX(-20deg);
+    pointer-events: none;
+}
+
+.btn-primary:hover::after,
+.btn-success:hover::after {
+    animation: shine 0.7s ease;
+}
+
+/* Icons inside buttons nudge on hover (e.g. the arrow in "Get started") */
+.btn .bi {
+    display: inline-block;
+    transition: transform 0.25s var(--ease-out);
+}
+
+.btn:hover .bi-arrow-right {
+    transform: translateX(4px);
+}
+
+.btn:hover .bi-plus-lg {
+    transform: rotate(90deg);
 }
 
 .btn:focus-visible {
@@ -282,6 +346,7 @@
 .btn-primary:focus {
     background: var(--primary-dark);
     border-color: var(--primary-dark);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
 }
 
 .btn-success {
@@ -294,6 +359,7 @@
 .btn-success:hover {
     background: #059669;
     border-color: #059669;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
 }
 
 .btn-danger {
@@ -328,8 +394,13 @@
     opacity: 0.5;
 }
 
+.btn-close {
+    transition: opacity 0.15s, transform 0.25s var(--ease-out);
+}
+
 .btn-close:hover {
     opacity: 0.85;
+    transform: rotate(90deg);
 }
 
 /* Small loading circle inside a button */
@@ -367,7 +438,12 @@
     font-size: 14px;
     line-height: 1.5;
     appearance: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.form-control:hover:not(:focus),
+.form-select:hover:not(:focus) {
+    border-color: #cbd5e1;
 }
 
 .form-control::placeholder {
@@ -498,6 +574,7 @@
 }
 
 .segmented button {
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     border: 0;
     background: transparent;
     padding: 6px 14px;
@@ -522,6 +599,7 @@
 }
 
 .filter-chip {
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out);
     border: 1px solid var(--border);
     background: var(--surface);
     border-radius: 999px;
@@ -530,6 +608,10 @@
     font-size: 13px;
     color: var(--text-muted);
     white-space: nowrap;
+}
+
+.filter-chip:hover {
+    transform: translateY(-1px);
 }
 
 .filter-chip.active {
@@ -546,6 +628,7 @@
 }
 
 .empty i {
+    animation: float 3s ease-in-out infinite;
     font-size: 38px;
     display: block;
     margin-bottom: 8px;
@@ -580,7 +663,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-lg);
-    animation: toast-in 0.25s ease;
+    animation: slide-in-right 0.4s var(--ease-spring);
 }
 
 .toast-item .toast-icon {
@@ -596,11 +679,6 @@
     opacity: 0;
     transform: translateY(8px);
     transition: all 0.25s;
-}
-
-@keyframes toast-in {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: none; }
 }
 
 /* Modals: createModal() in ui.js adds .open (shown) and .show (faded in) */
@@ -626,12 +704,12 @@
 .modal-dialog {
     max-width: 500px;
     margin: 0 auto;
-    transition: transform 0.2s, opacity 0.2s;
+    transition: transform 0.25s var(--ease-out), opacity 0.2s;
 }
 
 .modal.fade .modal-dialog {
     opacity: 0;
-    transform: translateY(-24px);
+    transform: translateY(16px) scale(0.96);
 }
 
 .modal.show .modal-dialog {
@@ -681,6 +759,10 @@
 .modal-title {
     font-weight: 700;
     font-size: 17px;
+}
+
+.modal.show .confirm-icon {
+    animation: pop 0.45s var(--ease-spring) 0.1s both;
 }
 
 .confirm-icon {

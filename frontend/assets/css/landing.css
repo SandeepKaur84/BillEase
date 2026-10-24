@@ -3,9 +3,18 @@
    Public page that explains the app, with log in and sign up buttons.
    ===================================================================== */
 
+html {
+    scroll-behavior: smooth;
+}
+
 .landing {
     background: var(--surface);
     font-size: 15px;
+}
+
+/* Jump links (#features ...) stop below the sticky nav */
+section[id] {
+    scroll-margin-top: 68px;
 }
 
 .container {
@@ -40,6 +49,14 @@
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s, background 0.3s;
+    animation: fade-in 0.5s ease both;
+}
+
+/* Added by landing.js once the page is scrolled */
+.site-nav.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
 }
 
 .nav-inner {
@@ -65,6 +82,11 @@
     height: 36px;
     border-radius: 10px;
     box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+    transition: transform 0.35s var(--ease-spring);
+}
+
+.site-brand:hover .site-logo {
+    transform: rotate(-10deg) scale(1.06);
 }
 
 .nav-links {
@@ -73,12 +95,32 @@
 }
 
 .nav-links a {
+    position: relative;
     color: var(--text-muted);
     font-weight: 500;
+    transition: color 0.2s;
+}
+
+/* Underline grows from the middle on hover */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transition: transform 0.3s var(--ease-out);
 }
 
 .nav-links a:hover {
     color: var(--text);
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
 }
 
 .nav-actions {
@@ -89,11 +131,57 @@
 
 /* ---------- Hero ---------- */
 .hero-section {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     padding: 72px 0 80px;
     background:
         radial-gradient(600px 300px at 85% 10%, rgba(124, 58, 237, 0.10), transparent 70%),
         radial-gradient(500px 300px at 0% 100%, rgba(79, 70, 229, 0.08), transparent 70%);
 }
+
+/* Two soft colour glows drift slowly behind the hero */
+.hero-section::before,
+.hero-section::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    animation: drift 14s ease-in-out infinite alternate;
+}
+
+.hero-section::before {
+    top: -120px;
+    right: 8%;
+    background: #a78bfa;
+}
+
+.hero-section::after {
+    bottom: -160px;
+    left: -60px;
+    background: #67e8f9;
+    animation-duration: 18s;
+    animation-direction: alternate-reverse;
+}
+
+@keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(-60px, 40px) scale(1.15); }
+}
+
+/* Hero text comes in line by line */
+.hero-grid > div:first-child > * {
+    animation: fade-up 0.7s var(--ease-out) both;
+}
+
+.hero-grid > div:first-child > :nth-child(2) { animation-delay: 0.08s; }
+.hero-grid > div:first-child > :nth-child(3) { animation-delay: 0.16s; }
+.hero-grid > div:first-child > :nth-child(4) { animation-delay: 0.24s; }
+.hero-grid > div:first-child > :nth-child(5) { animation-delay: 0.32s; }
 
 .hero-grid {
     display: grid;
@@ -111,7 +199,8 @@
 }
 
 .accent {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(90deg, #4f46e5, #7c3aed, #db2777, #4f46e5) 0 50% / 300% 100%;
+    animation: gradient-shift 6s ease-in-out infinite;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -153,7 +242,52 @@
     border: 1px solid var(--border);
     box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12), 0 8px 20px rgba(15, 23, 42, 0.06);
     overflow: hidden;
-    transform: rotate(1.5deg);
+    transform: perspective(1200px) rotateY(-8deg) rotateX(4deg) rotate(1.5deg);
+    animation:
+        preview-in 0.9s var(--ease-out) 0.2s both,
+        preview-float 7s ease-in-out 1.1s infinite;
+    transition: transform 0.6s var(--ease-out), box-shadow 0.6s;
+}
+
+/* Straightens up when the mouse is on it */
+.preview:hover {
+    animation: none;
+    transform: perspective(1200px) rotateY(0) rotateX(0) rotate(0) scale(1.02);
+    box-shadow: 0 40px 80px rgba(79, 70, 229, 0.2), 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+@keyframes preview-in {
+    from { opacity: 0; transform: perspective(1200px) rotateY(-20deg) rotateX(8deg) translateY(40px) scale(0.92); }
+    to   { opacity: 1; transform: perspective(1200px) rotateY(-8deg) rotateX(4deg) rotate(1.5deg); }
+}
+
+@keyframes preview-float {
+    0%, 100% { transform: perspective(1200px) rotateY(-8deg) rotateX(4deg) rotate(1.5deg) translateY(0); }
+    50%      { transform: perspective(1200px) rotateY(-8deg) rotateX(4deg) rotate(1.5deg) translateY(-12px); }
+}
+
+/* The parts inside the preview appear one by one */
+.preview-kpi,
+.preview-line,
+.preview-total {
+    animation: fade-up 0.5s var(--ease-out) both;
+}
+
+.preview-kpi:nth-child(1) { animation-delay: 0.6s; }
+.preview-kpi:nth-child(2) { animation-delay: 0.7s; }
+.preview-kpi:nth-child(3) { animation-delay: 0.8s; }
+.preview-line:nth-child(2) { animation-delay: 0.9s; }
+.preview-line:nth-child(3) { animation-delay: 1.0s; }
+.preview-line:nth-child(4) { animation-delay: 1.1s; }
+.preview-total { animation-delay: 1.2s; }
+
+.preview-btn {
+    animation: fade-up 0.5s var(--ease-out) 1.3s both, checkout-glow 2.4s ease-in-out 2s infinite;
+}
+
+@keyframes checkout-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50%      { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
 }
 
 .preview-bar {
@@ -310,16 +444,21 @@
     border-radius: var(--radius);
     border: 1px solid var(--border);
     background: var(--surface);
-    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s, border-color 0.25s;
 }
 
 .feature:hover {
-    transform: translateY(-3px);
+    transform: translateY(-6px);
     border-color: #c7d2fe;
-    box-shadow: 0 12px 28px rgba(79, 70, 229, 0.10);
+    box-shadow: 0 18px 36px rgba(79, 70, 229, 0.12);
+}
+
+.feature:hover .feature-icon {
+    transform: rotate(-10deg) scale(1.15);
 }
 
 .feature-icon {
+    transition: transform 0.4s var(--ease-spring);
     width: 46px;
     height: 46px;
     border-radius: 12px;
@@ -354,12 +493,23 @@
 }
 
 .steps li {
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
     position: relative;
     padding: 28px 24px 24px;
     border-radius: var(--radius);
     background: var(--surface);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
+}
+
+.steps li:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Step numbers pop in when the step scrolls into view */
+.in-view .step-no {
+    animation: pop 0.5s var(--ease-spring) calc(var(--reveal-delay, 0s) + 0.2s) both;
 }
 
 .step-no {
@@ -398,7 +548,21 @@
     border: 1px solid var(--border);
 }
 
+.safe-list li {
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.safe-list li:hover {
+    border-color: #a7f3d0;
+    box-shadow: 0 10px 24px rgba(16, 185, 129, 0.1);
+}
+
+.safe-list li:hover i {
+    transform: scale(1.12) rotate(-6deg);
+}
+
 .safe-list i {
+    transition: transform 0.35s var(--ease-spring);
     flex-shrink: 0;
     width: 38px;
     height: 38px;
@@ -437,7 +601,8 @@
     padding: 40px 48px;
     border-radius: 22px;
     color: #fff;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(120deg, #4f46e5, #7c3aed, #6366f1, #4f46e5) 0 50% / 300% 100%;
+    animation: gradient-shift 10s ease-in-out infinite;
     box-shadow: 0 20px 40px rgba(79, 70, 229, 0.25);
 }
 
@@ -475,6 +640,24 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+/* ---------- Scroll reveal ---------- */
+/* landing.js adds .reveal-ready to <html> and .in-view to each [data-reveal]
+   element as it scrolls into view. It uses the separate "translate" property,
+   so hover effects that use "transform" still work on the same element.
+   Without JavaScript, everything simply shows. */
+.reveal-ready [data-reveal] {
+    opacity: 0;
+    translate: 0 28px;
+    transition: opacity 0.7s var(--ease-out), translate 0.7s var(--ease-out),
+                transform 0.35s var(--ease-out), box-shadow 0.35s, border-color 0.25s;
+    transition-delay: var(--reveal-delay, 0s), var(--reveal-delay, 0s), 0s, 0s, 0s;
+}
+
+.reveal-ready [data-reveal].in-view {
+    opacity: 1;
+    translate: 0 0;
 }
 
 /* ---------- Responsive ---------- */
