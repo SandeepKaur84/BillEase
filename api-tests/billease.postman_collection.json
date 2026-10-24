@@ -1,34 +1,162 @@
 {
   "info": {
     "name": "BillEase API",
-    "description": "All REST API requests. Import into Thunder Client (Collections > menu > Import) or Postman. Start the backend first.",
+    "description": "All REST API requests. Import into Thunder Client (Collections > menu > Import) or Postman. Start the backend first. Run 'Auth > Sign up' or 'Auth > Log in' first: every other request sends 'Authorization: Bearer {{token}}'. Postman saves the token automatically; in Thunder Client copy the token from the response into the collection's 'token' variable.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080/api" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
   ],
   "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign up (saves token)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/signup",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ravi Kumar\",\n  \"email\": \"ravi@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Save the login token for all other requests",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('token', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Log in (saves token)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ravi@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Save the login token for all other requests",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('token', pm.response.json().token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Log in - wrong password (expect 401)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ravi@example.com\",\n  \"password\": \"wrong-password\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Who am I",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Log out",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/logout"
+          }
+        }
+      ]
+    },
     {
       "name": "Products",
       "item": [
         {
           "name": "Get all products",
-          "request": { "method": "GET", "url": "{{baseUrl}}/products" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products"
+          }
         },
         {
           "name": "Search products (name or ID)",
-          "request": { "method": "GET", "url": "{{baseUrl}}/products?search=pen" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products?search=pen"
+          }
         },
         {
           "name": "Get product by ID",
-          "request": { "method": "GET", "url": "{{baseUrl}}/products/1" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products/1"
+          }
         },
         {
           "name": "Add product",
           "request": {
             "method": "POST",
             "url": "{{baseUrl}}/products",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Green Tea 100g\",\n  \"category\": \"Grocery\",\n  \"price\": 120.00,\n  \"quantity\": 30\n}"
@@ -40,7 +168,12 @@
           "request": {
             "method": "POST",
             "url": "{{baseUrl}}/products",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"\",\n  \"category\": \"Grocery\",\n  \"price\": -5,\n  \"quantity\": -1\n}"
@@ -52,7 +185,12 @@
           "request": {
             "method": "PUT",
             "url": "{{baseUrl}}/products/1",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Notebook A4 (200 pages)\",\n  \"category\": \"Stationery\",\n  \"price\": 65.00,\n  \"quantity\": 120\n}"
@@ -61,7 +199,10 @@
         },
         {
           "name": "Delete product (soft delete)",
-          "request": { "method": "DELETE", "url": "{{baseUrl}}/products/9" }
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/products/9"
+          }
         }
       ]
     },
@@ -70,11 +211,17 @@
       "item": [
         {
           "name": "Low-stock products",
-          "request": { "method": "GET", "url": "{{baseUrl}}/products/low-stock" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/products/low-stock"
+          }
         },
         {
           "name": "Add stock",
-          "request": { "method": "PUT", "url": "{{baseUrl}}/products/6/stock?add=20" }
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/products/6/stock?add=20"
+          }
         }
       ]
     },
@@ -86,7 +233,12 @@
           "request": {
             "method": "POST",
             "url": "{{baseUrl}}/sales",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 2 },\n    { \"productId\": 2, \"quantity\": 5 }\n  ]\n}"
@@ -98,7 +250,12 @@
           "request": {
             "method": "POST",
             "url": "{{baseUrl}}/sales",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"items\": [\n    { \"productId\": 8, \"quantity\": 1000 }\n  ]\n}"
@@ -107,11 +264,17 @@
         },
         {
           "name": "Sales history",
-          "request": { "method": "GET", "url": "{{baseUrl}}/sales" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sales"
+          }
         },
         {
           "name": "Get sale / invoice",
-          "request": { "method": "GET", "url": "{{baseUrl}}/sales/1" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sales/1"
+          }
         }
       ]
     },
@@ -120,9 +283,22 @@
       "item": [
         {
           "name": "Dashboard summary",
-          "request": { "method": "GET", "url": "{{baseUrl}}/dashboard" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard"
+          }
         }
       ]
     }
-  ]
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  }
 }

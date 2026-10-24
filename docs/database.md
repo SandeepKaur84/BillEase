@@ -4,6 +4,8 @@ Database name: **`billease_db`** (MySQL 8)
 
 ```
 products (1) ────< sale_items >──── (1) sales
+
+users (1) ────< user_sessions
 ```
 
 ## Tables
@@ -35,6 +37,23 @@ products (1) ────< sale_items >──── (1) sales
 | price | DECIMAL(10,2), NOT NULL | price **at the time of sale** |
 | subtotal | DECIMAL(12,2), NOT NULL | price × quantity |
 
+### users
+| Column | Type | Notes |
+|---|---|---|
+| id | BIGINT, PK, auto increment | |
+| name | VARCHAR(100), NOT NULL | |
+| email | VARCHAR(150), NOT NULL, UNIQUE | saved in lower case |
+| password_hash | VARCHAR(100), NOT NULL | BCrypt hash; the real password is never stored |
+| created_at | DATETIME(6), NOT NULL | |
+
+### user_sessions
+| Column | Type | Notes |
+|---|---|---|
+| token | VARCHAR(64), PK | random login token the browser sends as `Authorization: Bearer <token>` |
+| user_id | BIGINT, FK → users.id | who is logged in |
+| created_at | DATETIME(6), NOT NULL | |
+| expires_at | DATETIME(6), NOT NULL | 7 days after login; expired rows are removed when used |
+
 ## How the tables relate
 
 - **One sale has many sale items.** `sale_items.sale_id` points to `sales.id`.
@@ -42,6 +61,7 @@ products (1) ────< sale_items >──── (1) sales
 - `sale_items` is the link table between products and sales: a *many-to-many* relationship broken into two *one-to-many* relationships.
 - `sale_items.price` stores the price charged at the time, so changing a product's price later doesn't change old invoices.
 - **Soft delete:** deleting a product only sets `active = 0`. The row stays, so old sale items still point to a real product. The foreign key also stops MySQL from hard-deleting a product that has been sold.
+- **One user can be logged in on many browsers.** Each login adds a `user_sessions` row; logging out deletes that row, so the token stops working at once.
 
 ## In Java (JPA)
 
@@ -50,6 +70,8 @@ products (1) ────< sale_items >──── (1) sales
 | products | `Product` | — |
 | sales | `Sale` | `@OneToMany(mappedBy = "sale", cascade = ALL)` → items |
 | sale_items | `SaleItem` | `@ManyToOne` → sale, `@ManyToOne` → product |
+| users | `User` | — (`passwordHash` has `@JsonIgnore`, so it is never sent to the browser) |
+| user_sessions | `UserSession` | `@ManyToOne` → user |
 
 ## SQL files
 

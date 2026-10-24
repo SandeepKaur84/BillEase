@@ -10,6 +10,9 @@
 | `mvnw.cmd not recognized` / `No plugin found for prefix 'spring-boot'` | Command run from the wrong folder | Run it inside `BillEase/backend` |
 | VS Code: "file is not on the classpath" | VS Code opened the wrong folder or remembers an old layout | Open the `BillEase` folder, then Command Palette → **Java: Clean Java Language Server Workspace** → Restart |
 | Page loads but tables are empty | Backend error, or the backend isn't running | Start the backend; check the red alert on the page and the terminal logs |
+| Every app page jumps to the login page | Not logged in, or the login expired (7 days) or was logged out | Log in again. Signing up again with the same email gives "already exists": use Log in |
+| `401` / `Please log in to continue` in Thunder Client or Postman | The request has no token | Run **Auth → Log in** first and put the returned `token` into the collection's `token` variable |
+| "Invalid email or password" but the password is right | The account was made on a different database (e.g. after changing MySQL settings) | Sign up again; accounts live in the `users` table of the database you're connected to |
 | `Failed to fetch` / CORS error in the browser console | Backend not running, or the frontend calls the wrong address | Start the backend; check `API_BASE` in `frontend/assets/js/core/api.js` |
 | Pages show 404 at `localhost:8080` | Backend can't find the `frontend` folder | Start it from `BillEase/backend` (or `BillEase`) so `../frontend` or `frontend` exists |
 | Icons or dashboard charts missing | No internet (Bootstrap Icons and Chart.js load from a CDN) | Connect to the internet |

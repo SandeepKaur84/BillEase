@@ -37,13 +37,14 @@ Wait for `Started BillEaseApplication`. On the first run, 8 sample products are 
 ## Step 4: Open the frontend (choose one)
 
 - **Option A (easiest):** open **http://localhost:8080**. The backend also serves the `frontend/` folder, so nothing else needs to run.
-- **Option B (separate frontend server):** right-click `frontend/index.html` → **Open with Live Server**. It opens at `http://127.0.0.1:5500` (redirecting to `pages/dashboard.html`) and calls the backend at `http://localhost:8080/api`. Saving a frontend file reloads the browser instantly.
+- **Option B (separate frontend server):** right-click `frontend/index.html` → **Open with Live Server**. It opens at `http://127.0.0.1:5500` (the home page) and calls the backend at `http://localhost:8080/api`. Saving a frontend file reloads the browser instantly.
 
 The backend must be running for either option.
 
 ## Step 5: Try it
 
-1. **Products:** add a product, edit it, search for it.
-2. **Billing:** click a few products, change the quantities, then click **Generate Bill**.
-3. **Invoice:** check the invoice, then click **Print Invoice**.
-4. **Stock** and **Dashboard:** confirm that stock went down and the sale appears.
+1. **Sign up:** on the home page click **Sign up**, enter your name, email and a password (6+ characters). You land on the dashboard. Next time use **Log in**.
+2. **Products:** add a product, edit it, search for it.
+3. **Billing:** click a few products, change the quantities, then click **Generate Bill**.
+4. **Invoice:** check the invoice, then click **Print Invoice**.
+5. **Stock** and **Dashboard:** confirm that stock went down and the sale appears.

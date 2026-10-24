@@ -1,6 +1,6 @@
 # BillEase: Inventory and Billing System
 
-**BillEase** ("billing made easy") is a beginner-friendly Java full-stack web app for small shops. It manages products and stock, creates bills, prints invoices and keeps a sales history.
+**BillEase** ("billing made easy") is a beginner-friendly Java full-stack web app for small shops. It manages products and stock, creates bills, prints invoices and keeps a sales history. A public home page explains the app; shop staff sign up or log in to reach the dashboard.
 
 **Stack:** Java 17 · Spring Boot 3.3 · Spring Data JPA · MySQL 8 · HTML/CSS/JavaScript (no CSS framework) · Maven
 
@@ -8,6 +8,8 @@
 
 | Module | What it does |
 |---|---|
+| Home page | Public page that explains BillEase, with Log in and Sign up buttons |
+| Accounts | Sign up, log in, log out; passwords hashed with BCrypt; every app page and API call needs a login |
 | Product Management | Add, edit, delete (soft delete) and search products by name or ID, with validation |
 | Stock Management | Stock levels, low-stock warnings, add stock; stock drops automatically after each sale |
 | Billing | Pick products, set quantities, live line totals and grand total; overselling is blocked |
@@ -29,17 +31,22 @@ BillEase/
 │       │   ├── sale/          Sale + SaleItem (entities), SaleRequest (DTO), SaleRepository,
 │       │   │                  SaleService, SaleController
 │       │   ├── dashboard/     DashboardController
+│       │   ├── auth/          User + UserSession (entities), AuthService, AuthController,
+│       │   │                  AuthInterceptor (checks the login token on every /api call)
 │       │   └── common/
 │       │       ├── config/    WebConfig (CORS + serves frontend), DataSeeder (sample data)
 │       │       └── exception/ GlobalExceptionHandler + custom exceptions
 │       ├── main/resources/application.properties   MySQL settings
 │       └── test/java/com/billease/                 JUnit tests (H2 in-memory DB)
+│           ├── auth/AuthControllerTest.java
 │           ├── product/ProductControllerTest.java
 │           └── sale/SaleServiceTest.java
 │
 ├── frontend/                HTML + CSS + JavaScript (no framework)
-│   ├── index.html           Entry point: redirects to pages/dashboard.html
+│   ├── index.html           Public home page (Log in / Sign up)
 │   ├── pages/
+│   │   ├── login.html       Log in
+│   │   ├── signup.html      Sign up
 │   │   ├── dashboard.html   Dashboard
 │   │   ├── products.html    Product Management
 │   │   ├── stock.html       Stock Management
@@ -51,14 +58,16 @@ BillEase/
 │       │   ├── base.css         colors, page defaults, grid, utility classes
 │       │   ├── layout.css       sidebar, top bar, content area
 │       │   ├── components.css   cards, tables, chips, buttons, forms, toasts, modals
+│       │   ├── landing.css      home page only
+│       │   ├── auth.css         log in + sign up pages
 │       │   ├── billing.css      billing page only
 │       │   └── invoice.css      invoice page only (+ print styles)
 │       └── js/
 │           ├── core/            loaded on every page, in this order:
-│           │   ├── api.js       API_BASE + api() fetch helper
+│           │   ├── api.js       API_BASE, api() fetch helper, login token (getToken, saveSession)
 │           │   ├── format.js    money, dates, invoice numbers, escapeHtml
 │           │   ├── ui.js        avatars, chips, toasts, confirm dialog, createModal
-│           │   └── layout.js    sidebar + top bar
+│           │   └── layout.js    login check, sidebar (with user + log out) + top bar
 │           └── pages/           one script per page (dashboard.js, products.js, ...)
 │
 ├── database/                schema.sql, sample-data.sql
@@ -75,7 +84,7 @@ BillEase/
    cd backend
    .\mvnw.cmd spring-boot:run
    ```
-4. Open **http://localhost:8080**. The database `billease_db`, its tables and 8 sample products are created automatically.
+4. Open **http://localhost:8080** and click **Sign up** to create your account. The database `billease_db`, its tables and 8 sample products are created automatically.
 
 To run the automated tests: `cd backend` then `.\mvnw.cmd test`.
 

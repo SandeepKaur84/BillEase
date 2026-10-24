@@ -2,6 +2,25 @@
 
 Base URL: `http://localhost:8080/api`
 
+## Logging in
+
+Every endpoint except **sign up** and **log in** needs a login token. Sign up or log in to get one, then send it with each request:
+
+```
+Authorization: Bearer <token>
+```
+
+Without a valid token the server answers `401 { "message": "Please log in to continue" }`. A token lasts 7 days (`app.session-days`) or until you log out.
+
+| Method | URL | Purpose | Success |
+|---|---|---|---|
+| POST | `/auth/signup` | Create an account, returns a token | 201 / 400 |
+| POST | `/auth/login` | Log in, returns a token | 200 / 401 |
+| GET | `/auth/me` | The logged-in user | 200 / 401 |
+| POST | `/auth/logout` | End this login (the token stops working) | 204 |
+
+## Shop data (login required)
+
 | Method | URL | Purpose | Success |
 |---|---|---|---|
 | GET | `/products` | All products | 200 |
@@ -19,9 +38,24 @@ Base URL: `http://localhost:8080/api`
 
 ## Thunder Client collection
 
-In VS Code, open **Thunder Client → Collections → ☰ menu → Import** and choose `api-tests/billease.postman_collection.json`. It contains every request above, plus two that are expected to fail, so you can show the validation and stock errors.
+In VS Code, open **Thunder Client → Collections → ☰ menu → Import** and choose `api-tests/billease.postman_collection.json`. It contains every request above, plus three that are expected to fail, so you can show the validation, stock and wrong-password errors.
+
+Run **Auth → Sign up** (or **Log in**) first. Every other request sends `Authorization: Bearer {{token}}`. Postman saves the token into the `token` variable automatically; in Thunder Client, copy `token` from the response into the collection's `token` variable.
 
 ## Sample requests
+
+**Sign up:** `POST /api/auth/signup`
+```json
+{ "name": "Ravi Kumar", "email": "ravi@example.com", "password": "secret123" }
+```
+Response `201 Created` (log in returns the same shape with `200 OK`):
+```json
+{
+  "token": "pX3k...43 random characters...",
+  "user": { "id": 1, "name": "Ravi Kumar", "email": "ravi@example.com", "createdAt": "2026-10-24T12:49:30" }
+}
+```
+The password and its hash are never sent back.
 
 **Add a product:** `POST /api/products`
 ```json
@@ -55,6 +89,7 @@ Every error has the same shape:
 
 | Status | When |
 |---|---|
-| 400 Bad Request | Validation failed, not enough stock, quantity ≤ 0, empty bill, broken JSON |
+| 400 Bad Request | Validation failed, not enough stock, quantity ≤ 0, empty bill, broken JSON, email already registered |
+| 401 Unauthorized | Not logged in, token unknown or expired, or wrong email/password at login |
 | 404 Not Found | Product or sale ID does not exist (or the product was deleted) |
 | 500 Internal Server Error | Unexpected error (details in the backend console) |
