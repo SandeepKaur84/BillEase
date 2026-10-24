@@ -41,7 +41,7 @@ function renderLayout() {
     sidebar.className = 'sidebar no-print';
     sidebar.innerHTML = `
         <a href="dashboard.html" class="brand">
-            <div class="brand-logo"><i class="bi bi-receipt-cutoff"></i></div>
+            <img class="brand-logo" src="../assets/img/logo.svg" alt="">
             <div>BillEase<small>Inventory &amp; Billing</small></div>
         </a>
         <nav>${nav}</nav>

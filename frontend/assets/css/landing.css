@@ -60,14 +60,10 @@
 }
 
 .site-logo {
+    display: block;
     width: 36px;
     height: 36px;
     border-radius: 10px;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-size: 18px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
 }
 
