@@ -1,7 +1,12 @@
 // ===== Sidebar + top bar, built on every page =====
 
-// Shown in the sidebar and on invoices
+// Shown on invoices
 const STORE_NAME = 'My Store';
+
+// The app pages are only for logged-in users
+if (!getToken()) {
+    goToLogin();
+}
 
 /**
  * Every page has <body data-page="..." data-title="..." data-subtitle="...">
@@ -9,6 +14,7 @@ const STORE_NAME = 'My Store';
  */
 function renderLayout() {
     const page = document.body.dataset.page;
+    const user = getUser() || {};
     const sections = [
         { title: 'Overview', links: [
             { id: 'dashboard', href: 'dashboard.html', label: 'Dashboard', icon: 'grid-1x2' }
@@ -40,11 +46,14 @@ function renderLayout() {
         </a>
         <nav>${nav}</nav>
         <div class="sidebar-footer">
-            <div class="avatar"><i class="bi bi-shop"></i></div>
-            <div>
-                <div class="fw-semibold">${escapeHtml(STORE_NAME)}</div>
-                <small>Administrator</small>
+            <div class="avatar">${escapeHtml((user.name || '?').trim().charAt(0).toUpperCase())}</div>
+            <div class="min-w-0 flex-grow-1">
+                <div class="fw-semibold text-truncate">${escapeHtml(user.name || '')}</div>
+                <small class="text-truncate">${escapeHtml(user.email || '')}</small>
             </div>
+            <button class="logout-btn" type="button" title="Log out" aria-label="Log out">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
         </div>`;
 
     const overlay = document.createElement('div');
@@ -79,6 +88,19 @@ function renderLayout() {
     };
     topbar.querySelector('.menu-btn').addEventListener('click', () => toggle(true));
     overlay.addEventListener('click', () => toggle(false));
+
+    sidebar.querySelector('.logout-btn').addEventListener('click', logout);
+}
+
+/** Ends the session on the server, forgets it in the browser, back to the home page. */
+async function logout() {
+    try {
+        await api('/auth/logout', { method: 'POST' });
+    } catch (e) {
+        // already logged out on the server, or server down: still log out here
+    }
+    clearSession();
+    location.href = '../index.html';
 }
 
 document.addEventListener('DOMContentLoaded', renderLayout);

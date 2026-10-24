@@ -1,0 +1,169 @@
+/* =====================================================================
+   BillEase - log in and sign up pages
+   Brand panel on the left, form on the right (pages/login.html, pages/signup.html).
+   ===================================================================== */
+
+.auth {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    min-height: 100vh;
+}
+
+/* ---------- Left: brand panel ---------- */
+.auth-side {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px 48px;
+    color: #fff;
+    background: linear-gradient(150deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+.auth-side::after {
+    content: '';
+    position: absolute;
+    right: -120px;
+    bottom: -120px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.auth-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+}
+
+.auth-side h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+}
+
+.auth-side p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 15px;
+    max-width: 380px;
+}
+
+.auth-points {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: grid;
+    gap: 12px;
+}
+
+.auth-points li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.auth-points i {
+    font-size: 18px;
+    color: #c4b5fd;
+}
+
+.auth-side small {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Right: form ---------- */
+.auth-main {
+    display: grid;
+    place-items: center;
+    padding: 40px 24px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-back {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 28px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.auth-back:hover {
+    color: var(--primary);
+}
+
+.auth-card h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.auth-card > p.text-muted {
+    margin-bottom: 24px;
+}
+
+.form-error {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #fecaca;
+    background: var(--danger-soft);
+    color: #b91c1c;
+    font-weight: 500;
+}
+
+.toggle-password {
+    padding-left: 12px;
+    padding-right: 12px;
+    color: var(--text-muted);
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+.auth-switch {
+    margin: 20px 0 0;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.auth-switch a {
+    font-weight: 600;
+}
+
+/* ---------- Small screens: form only ---------- */
+@media (max-width: 991.98px) {
+    .auth {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-side {
+        display: none;
+    }
+}

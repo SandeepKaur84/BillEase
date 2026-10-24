@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign up - BillEase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../assets/css/base.css" rel="stylesheet">
+    <link href="../assets/css/components.css" rel="stylesheet">
+    <link href="../assets/css/auth.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth">
+    <!-- Left: brand panel -->
+    <aside class="auth-side">
+        <a href="../index.html" class="auth-brand">
+            <span class="auth-logo"><i class="bi bi-receipt-cutoff"></i></span>BillEase
+        </a>
+        <div>
+            <h2>Run your shop counter from one screen.</h2>
+            <p>Create a free account and start billing in under a minute.</p>
+            <ul class="auth-points">
+                <li><i class="bi bi-check2-circle"></i>8 sample products to try things out</li>
+                <li><i class="bi bi-check2-circle"></i>Sales history and a live dashboard</li>
+                <li><i class="bi bi-check2-circle"></i>No setup, no credit card</li>
+            </ul>
+        </div>
+        <small>&copy; BillEase &middot; Billing made easy</small>
+    </aside>
+
+    <!-- Right: form -->
+    <main class="auth-main">
+        <form class="auth-card" id="authForm" data-mode="signup" novalidate>
+            <a href="../index.html" class="auth-back"><i class="bi bi-arrow-left me-1"></i>Home</a>
+            <h1>Create your account</h1>
+            <p class="text-muted">It takes less than a minute.</p>
+
+            <div class="form-error d-none" id="formError" role="alert"></div>
+
+            <div class="mb-3">
+                <label class="form-label" for="name">Full name</label>
+                <input type="text" class="form-control" id="name" autocomplete="name" maxlength="100" required
+                       placeholder="e.g. Ravi Kumar" autofocus>
+                <div class="invalid-feedback">Name is required</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" class="form-control" id="email" autocomplete="email" maxlength="150" required
+                       placeholder="you@example.com">
+                <div class="invalid-feedback">Enter a valid email address</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" autocomplete="new-password"
+                           minlength="6" maxlength="72" required placeholder="At least 6 characters">
+                    <button type="button" class="btn btn-light toggle-password" aria-label="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <div class="invalid-feedback">Password must be at least 6 characters</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="confirmPassword">Confirm password</label>
+                <input type="password" class="form-control" id="confirmPassword" autocomplete="new-password"
+                       required placeholder="Type it again">
+                <div class="invalid-feedback">Passwords do not match</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-submit" id="submitBtn">Create account</button>
+
+            <p class="auth-switch">Already have an account? <a href="login.html" id="switchLink">Log in</a></p>
+        </form>
+    </main>
+</div>
+
+<script src="../assets/js/core/api.js"></script>
+<script src="../assets/js/pages/auth.js"></script>
+</body>
+</html>
