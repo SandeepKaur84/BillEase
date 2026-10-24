@@ -43,3 +43,24 @@ CREATE TABLE IF NOT EXISTS sale_items (
     CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE RESTRICT,
     CONSTRAINT chk_sale_items_quantity CHECK (quantity > 0)
 );
+
+-- One row per account (people who can log in)
+CREATE TABLE IF NOT EXISTS users (
+    id             BIGINT        NOT NULL AUTO_INCREMENT,
+    name           VARCHAR(100)  NOT NULL,
+    email          VARCHAR(150)  NOT NULL,   -- stored in lower case
+    password_hash  VARCHAR(100)  NOT NULL,   -- BCrypt hash, never the real password
+    created_at     DATETIME(6)   NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_users_email UNIQUE (email)
+);
+
+-- One row per logged-in browser; logging out deletes the row
+CREATE TABLE IF NOT EXISTS user_sessions (
+    token       VARCHAR(64)  NOT NULL,       -- random login token sent as "Authorization: Bearer <token>"
+    user_id     BIGINT       NOT NULL,
+    created_at  DATETIME(6)  NOT NULL,
+    expires_at  DATETIME(6)  NOT NULL,       -- 7 days after login (app.session-days)
+    PRIMARY KEY (token),
+    CONSTRAINT fk_user_sessions_user FOREIGN KEY (user_id) REFERENCES users (id)
+);
