@@ -8,36 +8,55 @@ Browser (HTML + JS)  --fetch() JSON-->  Controller  -->  Service  -->  Repositor
 BillEase is split into two independent parts:
 
 - **backend/** is a Spring Boot REST API. It holds all the business rules and is the only part that talks to MySQL.
-- **frontend/** is plain HTML, CSS and JavaScript. It only talks to the backend through `/api/...` URLs. The backend address is set once, in `API_BASE` at the top of `frontend/js/common.js`.
+- **frontend/** is plain HTML, CSS and JavaScript. It only talks to the backend through `/api/...` URLs. The backend address is set once, in `API_BASE` at the top of `frontend/assets/js/core/api.js`.
 
-`WebConfig.java` allows calls from other addresses (CORS, for Live Server) and also serves the frontend folder at `http://localhost:8080`.
+`WebConfig.java` allows calls from other addresses (CORS, for Live Server) and also serves the frontend folder at `http://localhost:8080`. Opening `http://localhost:8080/` redirects to `pages/dashboard.html`.
 
-## Backend layers (`com.billease`)
+## Backend packages (`com.billease`)
 
-| Layer | Package | Job |
+The code is grouped **by feature**: everything about products is in `product/`, everything about sales in `sale/`. Inside each feature the classes still follow the usual layers.
+
+| Package | Classes | Job |
 |---|---|---|
-| Entity | `entity/` | Java classes mapped to tables (`Product`, `Sale`, `SaleItem`) |
-| Repository | `repository/` | Database operations. Spring writes the SQL from method names |
-| Service | `service/` | Business rules: stock checks, totals, soft delete, transactions |
-| Controller | `controller/` | REST endpoints that receive and return JSON |
-| DTO | `dto/` | `SaleRequest`, the JSON the billing page sends |
-| Exception | `exception/` | Turns errors into JSON `{ "message": ... }` with status 400/404 |
-| Config | `config/` | CORS, serving the frontend, sample data on first run |
+| `product/` | `Product`, `ProductRepository`, `ProductService`, `ProductController` | Products and stock |
+| `sale/` | `Sale`, `SaleItem`, `SaleRequest`, `SaleRepository`, `SaleService`, `SaleController` | Bills, invoices and sales history |
+| `dashboard/` | `DashboardController` | Summary numbers for the dashboard (uses the product and sale services) |
+| `common/config/` | `WebConfig`, `DataSeeder` | CORS, serving the frontend, sample data on first run |
+| `common/exception/` | `GlobalExceptionHandler`, `BadRequestException`, `ResourceNotFoundException` | Turns errors into JSON `{ "message": ... }` with status 400/404 |
+
+| Layer | Example | Job |
+|---|---|---|
+| Entity | `Product`, `Sale`, `SaleItem` | Java classes mapped to tables |
+| Repository | `ProductRepository` | Database operations. Spring writes the SQL from method names |
+| Service | `SaleService` | Business rules: stock checks, totals, soft delete, transactions |
+| Controller | `SaleController` | REST endpoints that receive and return JSON |
+| DTO | `SaleRequest` | The JSON the billing page sends |
 
 ## Frontend files
 
-| Page | Script | Uses API |
+Pages are in `frontend/pages/`; scripts and styles are in `frontend/assets/`.
+
+| Page | Script (`assets/js/pages/`) | Uses API |
 |---|---|---|
-| `index.html` (Dashboard) | `js/dashboard.js` | `GET /api/dashboard` |
-| `products.html` | `js/products.js` | `GET/POST/PUT/DELETE /api/products` |
-| `stock.html` | `js/stock.js` | `GET /api/products`, `/low-stock`, `PUT /{id}/stock` |
-| `billing.html` | `js/billing.js` | `GET /api/products`, `POST /api/sales` |
-| `invoice.html` | `js/invoice.js` | `GET /api/sales/{id}` |
-| `sales.html` | `js/sales.js` | `GET /api/sales` |
+| `dashboard.html` | `dashboard.js` | `GET /api/dashboard` |
+| `products.html` | `products.js` | `GET/POST/PUT/DELETE /api/products` |
+| `stock.html` | `stock.js` | `GET /api/products`, `/low-stock`, `PUT /{id}/stock` |
+| `billing.html` | `billing.js` | `GET /api/products`, `POST /api/sales` |
+| `invoice.html` | `invoice.js` | `GET /api/sales/{id}` |
+| `sales.html` | `sales.js` | `GET /api/sales` |
 
-`js/common.js` is loaded on every page. It holds `API_BASE`, the `api()` fetch helper, money and date formatting, toast notifications (`showAlert`), the confirm dialog (`confirmDialog`) and the sidebar + top bar layout (`renderLayout`). Each page only declares `<body data-page="..." data-title="...">` and its own content.
+Every page loads the shared scripts in `assets/js/core/` first, in this order:
 
-`css/style.css` is the design system: color tokens in `:root`, the sidebar layout, cards, tables, chips, the billing screen, the invoice and print styles. The dashboard charts use **Chart.js** (loaded from a CDN).
+| File | Holds |
+|---|---|
+| `api.js` | `API_BASE` and the `api()` fetch helper |
+| `format.js` | Money and date formatting, `invoiceNo()`, `escapeHtml()` |
+| `ui.js` | Avatars and chips, empty states, toast notifications (`showAlert`), the confirm dialog (`confirmDialog`), the modal open/close helper (`createModal`) |
+| `layout.js` | `STORE_NAME` and the sidebar + top bar (`renderLayout`) |
+
+Each page only declares `<body data-page="..." data-title="...">` and its own content.
+
+The styles are plain CSS (no framework) in `assets/css/`. Every page loads `base.css` (color tokens in `:root`, page defaults, a 12-column grid, utility classes), `layout.css` (sidebar, top bar, print rules) and `components.css` (cards, tables, chips, buttons, forms, toasts, modals). The billing and invoice pages also load `billing.css` and `invoice.css`. The dashboard charts use **Chart.js** (loaded from a CDN).
 
 ## How a sale works (data flow)
 

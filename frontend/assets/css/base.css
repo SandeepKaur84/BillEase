@@ -1,0 +1,186 @@
+/* =====================================================================
+   BillEase - base styles
+   Colors, page defaults, the 12-column grid and utility classes. Load first.
+   ===================================================================== */
+
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-soft: #eef2ff;
+    --success: #10b981;
+    --success-soft: #ecfdf5;
+    --warning: #f59e0b;
+    --warning-soft: #fffbeb;
+    --danger: #ef4444;
+    --danger-soft: #fef2f2;
+    --info: #0ea5e9;
+    --info-soft: #f0f9ff;
+
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e8ebf2;
+
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #94a3b8;
+    --sidebar-width: 250px;
+
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 8px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+h5 { font-size: 18px; }
+
+p {
+    margin: 0 0 14px;
+}
+
+small,
+.small {
+    font-size: 0.875em;
+}
+
+label {
+    display: inline-block;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align: inherit;
+}
+
+canvas {
+    vertical-align: middle;
+}
+
+/* ---------- Grid: .row + .col-* (12 columns) ---------- */
+.row {
+    --gap-x: 24px;
+    --gap-y: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--gap-y));
+    margin-left: calc(-0.5 * var(--gap-x));
+    margin-right: calc(-0.5 * var(--gap-x));
+}
+
+.row > * {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    padding-left: calc(0.5 * var(--gap-x));
+    padding-right: calc(0.5 * var(--gap-x));
+    margin-top: var(--gap-y);
+}
+
+.g-3 { --gap-x: 16px; --gap-y: 16px; }
+.g-4 { --gap-x: 24px; --gap-y: 24px; }
+
+.row > .col-6 { width: 50%; }
+
+@media (min-width: 576px) {
+    .row > .col-sm-6 { width: 50%; }
+}
+
+@media (min-width: 992px) {
+    .row > .col-lg-5 { width: 41.6667%; }
+    .row > .col-lg-6 { width: 50%; }
+    .row > .col-lg-7 { width: 58.3333%; }
+}
+
+@media (min-width: 1200px) {
+    .row > .col-xl-3 { width: 25%; }
+    .row > .col-xl-4 { width: 33.3333%; }
+    .row > .col-xl-8 { width: 66.6667%; }
+}
+
+/* ---------- Utility classes ---------- */
+.d-flex { display: flex !important; }
+.d-none { display: none !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+.align-items-center { align-items: center !important; }
+.justify-content-center { justify-content: center !important; }
+.gap-2 { gap: 8px !important; }
+.gap-3 { gap: 16px !important; }
+.h-100 { height: 100% !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-2 { margin-bottom: 8px !important; }
+.mb-3 { margin-bottom: 16px !important; }
+.mb-4 { margin-bottom: 24px !important; }
+.mt-1 { margin-top: 4px !important; }
+.mt-2 { margin-top: 8px !important; }
+.me-1 { margin-right: 4px !important; }
+.me-2 { margin-right: 8px !important; }
+.ms-1 { margin-left: 4px !important; }
+.ms-auto { margin-left: auto !important; }
+.px-4 { padding-left: 24px !important; padding-right: 24px !important; }
+.pt-1 { padding-top: 4px !important; }
+.pt-4 { padding-top: 24px !important; }
+.pb-3 { padding-bottom: 16px !important; }
+
+.text-end { text-align: right !important; }
+.text-center { text-align: center !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-danger { color: var(--danger) !important; }
+.text-warning { color: var(--warning) !important; }
+.text-reset { color: inherit !important; }
+.text-nowrap { white-space: nowrap !important; }
+.text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fw-semibold { font-weight: 600 !important; }
+.fw-bold { font-weight: 700 !important; }
+
+.min-w-0 { min-width: 0 !important; }

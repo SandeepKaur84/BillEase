@@ -37,7 +37,7 @@ Wait for `Started BillEaseApplication`. On the first run, 8 sample products are 
 ## Step 4: Open the frontend (choose one)
 
 - **Option A (easiest):** open **http://localhost:8080**. The backend also serves the `frontend/` folder, so nothing else needs to run.
-- **Option B (separate frontend server):** right-click `frontend/index.html` → **Open with Live Server**. It opens at `http://127.0.0.1:5500` and calls the backend at `http://localhost:8080/api`. Saving a frontend file reloads the browser instantly.
+- **Option B (separate frontend server):** right-click `frontend/index.html` → **Open with Live Server**. It opens at `http://127.0.0.1:5500` (redirecting to `pages/dashboard.html`) and calls the backend at `http://localhost:8080/api`. Saving a frontend file reloads the browser instantly.
 
 The backend must be running for either option.
 

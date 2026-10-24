@@ -13,8 +13,8 @@ Expected result: `Tests run: 12, Failures: 0, Errors: 0` and `BUILD SUCCESS`.
 
 | Test class | What it checks |
 |---|---|
-| `service/SaleServiceTest` | Total = 2×60 + 5×10 = 170 and stock goes down; a bill with one line over stock saves **nothing** (rollback); the same product added twice can't exceed stock; zero quantity and empty bills are rejected; an old invoice keeps its price after the product is edited and deleted |
-| `controller/ProductControllerTest` | POST returns 201; negative price/quantity and blank name return 400 with messages; search by name; delete then GET returns 404; add stock (and reject 0); unknown ID returns 404 |
+| `sale/SaleServiceTest` | Total = 2×60 + 5×10 = 170 and stock goes down; a bill with one line over stock saves **nothing** (rollback); the same product added twice can't exceed stock; zero quantity and empty bills are rejected; an old invoice keeps its price after the product is edited and deleted |
+| `product/ProductControllerTest` | POST returns 201; negative price/quantity and blank name return 400 with messages; search by name; delete then GET returns 404; add stock (and reject 0); unknown ID returns 404 |
 
 ## Manual checklist
 

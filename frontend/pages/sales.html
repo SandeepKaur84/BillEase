@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sales History - BillEase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../assets/css/base.css" rel="stylesheet">
+    <link href="../assets/css/layout.css" rel="stylesheet">
+    <link href="../assets/css/components.css" rel="stylesheet">
+</head>
+<body data-page="sales" data-title="Sales History" data-subtitle="Every bill you've created, newest first.">
+
+<main class="main">
+    <div class="content">
+
+        <!-- Summary tiles (follow the filters) -->
+        <div class="row g-3 mb-3">
+            <div class="col-6 col-xl-3">
+                <div class="panel hero stat">
+                    <div class="stat-icon"><i class="bi bi-currency-rupee"></i></div>
+                    <div>
+                        <div class="stat-label">Revenue</div>
+                        <div class="stat-value" id="sumRevenue">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-3">
+                <div class="panel stat">
+                    <div class="stat-icon tone-primary"><i class="bi bi-receipt"></i></div>
+                    <div>
+                        <div class="stat-label">Bills</div>
+                        <div class="stat-value" id="sumBills">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-3">
+                <div class="panel stat">
+                    <div class="stat-icon tone-success"><i class="bi bi-calculator"></i></div>
+                    <div>
+                        <div class="stat-label">Average Bill</div>
+                        <div class="stat-value" id="sumAverage">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-xl-3">
+                <div class="panel stat">
+                    <div class="stat-icon tone-warning"><i class="bi bi-bag-check"></i></div>
+                    <div>
+                        <div class="stat-label">Items Sold</div>
+                        <div class="stat-value" id="sumUnits">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="toolbar">
+                <div class="search-box flex-grow-1" style="max-width: 320px">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Invoice no. or product">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label class="small text-muted" for="fromDate">From</label>
+                    <input type="date" class="form-control" id="fromDate" style="width: auto">
+                    <label class="small text-muted" for="toDate">To</label>
+                    <input type="date" class="form-control" id="toDate" style="width: auto">
+                </div>
+                <button class="btn btn-light ms-auto" id="resetBtn"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset</button>
+            </div>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead>
+                    <tr>
+                        <th>Invoice</th>
+                        <th>Date &amp; Time</th>
+                        <th>Products</th>
+                        <th class="text-end">Items</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-end"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="salesTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="../assets/js/core/api.js"></script>
+<script src="../assets/js/core/format.js"></script>
+<script src="../assets/js/core/ui.js"></script>
+<script src="../assets/js/core/layout.js"></script>
+<script src="../assets/js/pages/sales.js"></script>
+</body>
+</html>

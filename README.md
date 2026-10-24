@@ -2,7 +2,7 @@
 
 **BillEase** ("billing made easy") is a beginner-friendly Java full-stack web app for small shops. It manages products and stock, creates bills, prints invoices and keeps a sales history.
 
-**Stack:** Java 17 · Spring Boot 3.3 · Spring Data JPA · MySQL 8 · HTML/CSS/JavaScript · Bootstrap 5 · Maven
+**Stack:** Java 17 · Spring Boot 3.3 · Spring Data JPA · MySQL 8 · HTML/CSS/JavaScript (no CSS framework) · Maven
 
 ## Features
 
@@ -23,27 +23,43 @@ BillEase/
 │   ├── mvnw.cmd, mvnw       Maven Wrapper (no Maven install needed)
 │   ├── pom.xml              Dependencies
 │   └── src/
-│       ├── main/java/com/billease/
+│       ├── main/java/com/billease/          one package per feature
 │       │   ├── BillEaseApplication.java     main(): start here
-│       │   ├── config/        WebConfig (CORS + serves frontend), DataSeeder (sample data)
-│       │   ├── controller/    ProductController, SaleController, DashboardController
-│       │   ├── dto/           SaleRequest
-│       │   ├── entity/        Product, Sale, SaleItem
-│       │   ├── exception/     GlobalExceptionHandler + custom exceptions
-│       │   ├── repository/    ProductRepository, SaleRepository
-│       │   └── service/       ProductService, SaleService
+│       │   ├── product/       Product (entity), ProductRepository, ProductService, ProductController
+│       │   ├── sale/          Sale + SaleItem (entities), SaleRequest (DTO), SaleRepository,
+│       │   │                  SaleService, SaleController
+│       │   ├── dashboard/     DashboardController
+│       │   └── common/
+│       │       ├── config/    WebConfig (CORS + serves frontend), DataSeeder (sample data)
+│       │       └── exception/ GlobalExceptionHandler + custom exceptions
 │       ├── main/resources/application.properties   MySQL settings
-│       └── test/                                   JUnit tests (H2 in-memory DB)
+│       └── test/java/com/billease/                 JUnit tests (H2 in-memory DB)
+│           ├── product/ProductControllerTest.java
+│           └── sale/SaleServiceTest.java
 │
-├── frontend/                HTML + CSS + JavaScript + Bootstrap
-│   ├── index.html           Dashboard
-│   ├── products.html        Product Management
-│   ├── stock.html           Stock Management
-│   ├── billing.html         Billing
-│   ├── invoice.html         Invoice
-│   ├── sales.html           Sales History
-│   ├── css/style.css
-│   └── js/                  common.js (shared) + one script per page
+├── frontend/                HTML + CSS + JavaScript (no framework)
+│   ├── index.html           Entry point: redirects to pages/dashboard.html
+│   ├── pages/
+│   │   ├── dashboard.html   Dashboard
+│   │   ├── products.html    Product Management
+│   │   ├── stock.html       Stock Management
+│   │   ├── billing.html     Billing
+│   │   ├── invoice.html     Invoice
+│   │   └── sales.html       Sales History
+│   └── assets/
+│       ├── css/
+│       │   ├── base.css         colors, page defaults, grid, utility classes
+│       │   ├── layout.css       sidebar, top bar, content area
+│       │   ├── components.css   cards, tables, chips, buttons, forms, toasts, modals
+│       │   ├── billing.css      billing page only
+│       │   └── invoice.css      invoice page only (+ print styles)
+│       └── js/
+│           ├── core/            loaded on every page, in this order:
+│           │   ├── api.js       API_BASE + api() fetch helper
+│           │   ├── format.js    money, dates, invoice numbers, escapeHtml
+│           │   ├── ui.js        avatars, chips, toasts, confirm dialog, createModal
+│           │   └── layout.js    sidebar + top bar
+│           └── pages/           one script per page (dashboard.js, products.js, ...)
 │
 ├── database/                schema.sql, sample-data.sql
 ├── api-tests/               billease.postman_collection.json (Thunder Client / Postman)
